@@ -166,7 +166,7 @@ const Index = () => {
             <div className="row mb-4">
                 {(profile && profile?.role === 'Admin') && (
                     <>
-                        <div className="col-md-4 my-1">
+                        <div className="col-md-3 my-1">
                             <div className='card rounded-xl'>
                                 <div className="card-body d-flex align-items-center gap-3">
                                     <FontAwesomeIcon icon={faUserPlus} size={'3x'} fixedWidth />
@@ -177,7 +177,7 @@ const Index = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-4 my-1">
+                        <div className="col-md-3 my-1">
                             <div className='card rounded-xl'>
                                 <div className="card-body d-flex align-items-center gap-3">
                                     <FontAwesomeIcon icon={faUsersCog} size={'3x'} fixedWidth />
@@ -188,7 +188,7 @@ const Index = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-4 my-1">
+                        <div className="col-md-3 my-1">
                             <div className='card rounded-xl'>
                                 <div className="card-body d-flex align-items-center gap-3">
                                     <FontAwesomeIcon icon={faUserFriends} size={'3x'} fixedWidth />
@@ -202,7 +202,7 @@ const Index = () => {
                     </>
                 )}
                 {(profile && profile?.role === 'Admin') && (
-                    <div className="col-md-4 my-1">
+                    <div className="col-md-3 my-1">
                         <div className='card rounded-xl'>
                             <div className="card-body d-flex align-items-center gap-3">
                                 <FontAwesomeIcon icon={faCannabis} size={'3x'} fixedWidth />
@@ -215,7 +215,7 @@ const Index = () => {
                     </div>
                 )}
                 {(profile && (profile?.role === 'Admin' || profile?.role === 'Distributor' || profile?.role === 'Pengecer')) && (
-                    <div className="col-md-4 my-1">
+                    <div className="col-md-3 my-1">
                         <div className='card rounded-xl'>
                             <div className="card-body d-flex align-items-center gap-3">
                                 <FontAwesomeIcon icon={faGlobeAsia} size={'3x'} fixedWidth />
@@ -228,7 +228,7 @@ const Index = () => {
                     </div>
                 )}
                 {(profile && (profile?.role === 'Admin' || profile?.role === 'Produsen')) && (
-                    <div className="col-md-4 my-1">
+                    <div className="col-md-3 my-1">
                         <div className='card rounded-xl'>
                             <div className="card-body d-flex align-items-center gap-3">
                                 <FontAwesomeIcon icon={faPencilAlt} size={'3x'} fixedWidth />
@@ -240,7 +240,7 @@ const Index = () => {
                         </div>
                     </div>
                 )}
-                <div className="col-md-4 my-1">
+                <div className="col-md-3 my-1">
                     <div className='card rounded-xl'>
                         <div className="card-body d-flex align-items-center gap-3">
                             <FontAwesomeIcon icon={faBuilding} size={'3x'} fixedWidth />
@@ -251,7 +251,7 @@ const Index = () => {
                         </div>
                     </div>
                 </div>
-                <div className="col-md-4 my-1">
+                <div className="col-md-3 my-1">
                     <div className='card rounded-xl'>
                         <div className="card-body d-flex align-items-center gap-3">
                             <FontAwesomeIcon icon={faBriefcase} size={'3x'} fixedWidth />

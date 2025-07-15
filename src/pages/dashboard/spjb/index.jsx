@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import Spinner from '@/components/Spinner'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExclamationTriangle, faInfoCircle, faPlus, faPrint, faSearch, faTimes, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faExclamationTriangle, faPlus, faPrint, faSearch, } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import DashboardLayout from '@/layouts/dashboard_layout'
 import axios from '@/api/axios'
@@ -27,6 +27,26 @@ const Index = () => {
             width: '5%',
             align: 'center',
             render: (text, record, index) => (currentPage - 1) * pageSize + index + 1,
+        },
+        {
+            title: 'Blockchain',
+            children: [
+                {
+                    title: 'Transaction Hash',
+                    dataIndex: "transactionHash",
+                    key: "transactionHash",
+                    sorter: (a, b) => { },
+                    sortOrder: currentSort && currentSort.index == 'transactionHash' ? currentSort.order : undefined,
+                },
+                {
+                    title: 'Block Number',
+                    dataIndex: "blockNumber",
+                    key: "blockNumber",
+                    align: 'center',
+                    sorter: (a, b) => { },
+                    sortOrder: currentSort && currentSort.index == 'blockNumber' ? currentSort.order : undefined,
+                }
+            ]
         },
         {
             title: 'Nomor',
@@ -94,7 +114,7 @@ const Index = () => {
             render: (text, record, index) => {
                 return (
                     <div className='d-flex gap-2 justify-content-center'>
-                        <a href={`${process.env.NEXT_PUBLIC_URL}/print.php?nomor=${record.spjbNumber}`} target='_blank' rel='noreferrer noopener' className='btn btn-primary btn-sm' data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content='Cetak SPJB'>
+                        <a href={`${process.env.NEXT_PUBLIC_URL}/print.php?nomor=${encodeURIComponent(record.spjbNumber)}`} target='_blank' rel='noreferrer noopener' className='btn btn-primary btn-sm' data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content='Cetak SPJB'>
                             <FontAwesomeIcon icon={faPrint} fixedWidth />
                         </a>
                     </div>

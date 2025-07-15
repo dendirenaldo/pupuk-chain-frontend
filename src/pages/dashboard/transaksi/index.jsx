@@ -1,7 +1,9 @@
 import { tanggalIndo } from '@/api/tanggal'
 import Spinner from '@/components/Spinner'
+import { useAuthContext } from '@/context/AuthProvider'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import DashboardLayout from '@/layouts/dashboard_layout'
+import { faFileExcel } from '@fortawesome/free-regular-svg-icons'
 import { faExclamationTriangle, faPlus, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Table } from 'antd'
@@ -12,6 +14,7 @@ import React, { useEffect, useState } from 'react'
 const Index = () => {
     const axios = useAxiosPrivate()
     const [search, setSearch] = useState('')
+    const { profile } = useAuthContext();
     const [currentSort, setCurrentSort] = useState({})
     const [currentPage, setCurrentPage] = useState(1)
     const [pageSize, setPageSize] = useState(10)
@@ -25,6 +28,26 @@ const Index = () => {
             width: '5%',
             align: 'center',
             render: (text, record, index) => (currentPage - 1) * pageSize + index + 1,
+        },
+        {
+            title: 'Blockchain',
+            children: [
+                {
+                    title: 'Transaction Hash',
+                    dataIndex: "transactionHash",
+                    key: "transactionHash",
+                    sorter: (a, b) => { },
+                    sortOrder: currentSort && currentSort.index == 'transactionHash' ? currentSort.order : undefined,
+                },
+                {
+                    title: 'Block Number',
+                    dataIndex: "blockNumber",
+                    key: "blockNumber",
+                    align: 'center',
+                    sorter: (a, b) => { },
+                    sortOrder: currentSort && currentSort.index == 'blockNumber' ? currentSort.order : undefined,
+                }
+            ]
         },
         {
             title: 'Pihak Pertama',
@@ -97,7 +120,7 @@ const Index = () => {
         setIsLoading(true)
         await axios({
             method: 'GET',
-            url: `${process.env.NEXT_PUBLIC_RESTFUL_API != undefined ? process.env.NEXT_PUBLIC_RESTFUL_API : ''}/transaksi?limit=${pageSize}&offset=${(currentPage - 1) * pageSize}${Object.keys(currentSort).length > 0 ? '&order=' + order : ''}${search != '' ? '&search=' + search : ''}`,
+            url: `${process.env.NEXT_PUBLIC_RESTFUL_API != undefined ? process.env.NEXT_PUBLIC_RESTFUL_API : ''}/transaksi?limit=${pageSize}&offset=${(currentPage - 1) * pageSize}${Object.keys(currentSort).length > 0 ? '&order=' + order : ''}${search != '' ? '&search=' + search : ''}${profile !== null && (profile?.role === 'Distributor' || profile?.role === 'Pengedar') ? `&sourceId=${profile?.pengedar.id}` : ''}`,
         }).then((res) => {
             setTableData(res.data.data)
             setTotal(res.data.totalData)
@@ -173,6 +196,9 @@ Index.getLayout = function getLayout(page) {
             <div className='d-flex justify-content-end gap-1'>
                 <Link href='/dashboard/transaksi/create' className='btn btn-primary rounded-xl'>
                     <FontAwesomeIcon icon={faPlus} />&nbsp; Create
+                </Link>
+                <Link href='/dashboard/transaksi/export' className='btn btn-secondary rounded-xl'>
+                    <FontAwesomeIcon icon={faFileExcel} />&nbsp; Export
                 </Link>
             </div>
         )}>{page}</DashboardLayout>

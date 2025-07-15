@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import Spinner from '@/components/Spinner'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExclamationTriangle, faPlus, faSearch, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faExclamationTriangle, faInfoCircle, faPlus, faSearch, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import { faEdit } from '@fortawesome/free-regular-svg-icons'
 import Swal from 'sweetalert2'
@@ -51,6 +51,9 @@ const Index = () => {
             render: (text, record, index) => {
                 return (
                     <div className='d-flex gap-2 justify-content-center'>
+                        <Link href={`/dashboard/pupuk/info/${record.id}`} className='btn btn-info btn-sm' data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content='Informasi Pupuk'>
+                            <FontAwesomeIcon icon={faInfoCircle} className='text-white' fixedWidth />
+                        </Link>
                         <Link href={`/dashboard/pupuk/edit/${record.id}`} className='btn btn-success btn-sm' data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content='Edit Pupuk'>
                             <FontAwesomeIcon icon={faEdit} fixedWidth />
                         </Link>

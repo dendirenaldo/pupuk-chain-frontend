@@ -83,6 +83,7 @@ const Edit = ({ id }) => {
         }).then((res) => {
             if (res.data?.id) {
                 setNama(res.data.nama);
+                setKemasan(res.data.kemasan);
                 setSpesifikasi(res.data.pupukSpesifikasi.map((val, index, arr) => {
                     return {
                         kandungan: val.kandungan,

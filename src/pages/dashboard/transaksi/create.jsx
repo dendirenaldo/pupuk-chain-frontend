@@ -1,3 +1,4 @@
+import { useAuthContext } from '@/context/AuthProvider'
 import useAxiosPrivate from '@/hooks/useAxiosPrivate'
 import DashboardLayout from '@/layouts/dashboard_layout'
 import { faSave } from '@fortawesome/free-regular-svg-icons'
@@ -14,6 +15,7 @@ const Create = () => {
     const router = useRouter()
     const axios = useAxiosPrivate()
     const buttonRef = useRef()
+    const { profile } = useAuthContext()
     const [listPupuk, setListPupuk] = useState([])
     const [listDistributor, setListDistributor] = useState([])
     const [listPengecer, setListPengecer] = useState([])
@@ -152,7 +154,16 @@ const Create = () => {
     useEffect(() => {
         getListPupuk()
     }, [])
-
+    useEffect(() => {
+        if (profile?.role === 'Distributor') {
+            setJenis('Produsen-Distributor')
+            setDistributorId(profile?.pengedar.id)
+        } else if (profile?.role === 'Pengecer') {
+            setJenis('Distributor-Pengecer')
+            setDistributorId(profile?.pengedar.pid)
+            setPengecerId(profile?.pengedar.id)
+        }
+    }, [profile])
     return (
         <>
             <Head>
@@ -161,21 +172,22 @@ const Create = () => {
             <form action="" onSubmit={handleSubmit}>
                 <div className="card">
                     <div className="card-body">
-                        <h6 className='fw-bolder'>Data</h6>
-                        <div className="mb-3">
-                            <label htmlFor="jenis" className="mb-1">Jenis <span className="text-danger">*</span></label>
-                            <select className={`form-control ${jenisError !== '' ? 'is-invalid' : ''}`} id='jenis' value={jenis} onChange={(e) => setJenis(e.target.value)} required>
-                                <option value="" selected>-- Choose Jenis --</option>
-                                <option value="Produsen-Distributor">Produsen-Distributor</option>
-                                <option value="Distributor-Pengecer">Distributor-Pengecer</option>
-                            </select>
-                            {jenisError !== '' && (
-                                <div className="invalid-feedback">{jenisError}</div>
-                            )}
-                        </div>
+                        {profile?.role === 'Admin' && (
+                            <div className="mb-3">
+                                <label htmlFor="jenis" className="mb-1">Jenis <span className="text-danger">*</span></label>
+                                <select className={`form-control ${jenisError !== '' ? 'is-invalid' : ''}`} id='jenis' value={jenis} onChange={(e) => setJenis(e.target.value)} required>
+                                    <option value="" selected>-- Choose Jenis --</option>
+                                    <option value="Produsen-Distributor">Produsen-Distributor</option>
+                                    <option value="Distributor-Pengecer">Distributor-Pengecer</option>
+                                </select>
+                                {jenisError !== '' && (
+                                    <div className="invalid-feedback">{jenisError}</div>
+                                )}
+                            </div>
+                        )}
                         {jenis !== '' && (
                             <>
-                                {jenis === 'Distributor-Pengecer' && (
+                                {(jenis === 'Distributor-Pengecer' && profile?.role === 'Admin') && (
                                     <div className="mb-3">
                                         <label htmlFor="distributorId" className="mb-1">Distributor <span className="text-danger">*</span></label>
                                         <select className={`form-control ${distributorIdError !== '' ? 'is-invalid' : ''}`} id='distributorId' value={distributorId} onChange={(e) => setDistributorId(e.target.value)} required>

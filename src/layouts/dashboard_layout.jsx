@@ -169,7 +169,7 @@ const DashboardLayout = ({ header = null, breadCrumb = null, breadCrumbRightCont
                                         </Link>
                                     </li>
                                 )}
-                                {(profile?.role === 'Distributor' || profile?.role === 'Pengecer') && (
+                                {(profile?.role === 'Admin' || profile?.role === 'Distributor' || profile?.role === 'Pengecer') && (
                                     <li className={`${styles['sidebar-list']} ${isCollapseSidebar ? styles['collapsed-sidebar-list'] : ''} ${currentURL.includes('/wilayah') ? styles['sidebar-list-active'] : ''}`}>
                                         <Link href='/dashboard/wilayah' className={`${isCollapseSidebar ? styles['collapsed-sidebar-item'] : ''}`}>
                                             <div className={styles['sidebar-list-icon']}>
@@ -189,14 +189,16 @@ const DashboardLayout = ({ header = null, breadCrumb = null, breadCrumbRightCont
                                         </Link>
                                     </li>
                                 )}
-                                <li className={`${styles['sidebar-list']} ${isCollapseSidebar ? styles['collapsed-sidebar-list'] : ''} ${currentURL.includes('/spjb') ? styles['sidebar-list-active'] : ''}`}>
-                                    <Link href='/dashboard/spjb' className={`${isCollapseSidebar ? styles['collapsed-sidebar-item'] : ''}`}>
-                                        <div className={styles['sidebar-list-icon']}>
-                                            <FontAwesomeIcon icon={faPencilAlt} size={isCollapseSidebar ? '1x' : 'xl'} fixedWidth />
-                                        </div>
-                                        <h6>SPJB</h6>
-                                    </Link>
-                                </li>
+                                {(profile?.role === 'Admin' || profile?.role === 'Produsen' || profile?.role === 'Distributor') && (
+                                    <li className={`${styles['sidebar-list']} ${isCollapseSidebar ? styles['collapsed-sidebar-list'] : ''} ${currentURL.includes('/spjb') ? styles['sidebar-list-active'] : ''}`}>
+                                        <Link href='/dashboard/spjb' className={`${isCollapseSidebar ? styles['collapsed-sidebar-item'] : ''}`}>
+                                            <div className={styles['sidebar-list-icon']}>
+                                                <FontAwesomeIcon icon={faPencilAlt} size={isCollapseSidebar ? '1x' : 'xl'} fixedWidth />
+                                            </div>
+                                            <h6>SPJB</h6>
+                                        </Link>
+                                    </li>
+                                )}
                                 <li className={`${styles['sidebar-list']} ${isCollapseSidebar ? styles['collapsed-sidebar-list'] : ''} ${currentURL.includes('/transaksi') ? styles['sidebar-list-active'] : ''}`}>
                                     <Link href='/dashboard/transaksi' className={`${isCollapseSidebar ? styles['collapsed-sidebar-item'] : ''}`}>
                                         <div className={styles['sidebar-list-icon']}>

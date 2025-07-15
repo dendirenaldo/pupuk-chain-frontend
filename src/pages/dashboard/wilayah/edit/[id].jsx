@@ -17,6 +17,7 @@ const Edit = ({ id }) => {
     const axios = useAxiosPrivate()
     const buttonRef = useRef()
     const { profile } = useAuthContext();
+    const [pengedar, setPengedar] = useState(null)
     const [listPengedar, setListPengedar] = useState([])
     const [listParent, setListParent] = useState([])
     const [pengedarId, setPengedarId] = useState('')
@@ -123,9 +124,30 @@ const Edit = ({ id }) => {
             setListParent([]);
         }
     }
+    const getPengedar = async () => {
+        if (pengedarId !== null && pengedarId !== '') {
+            await axios({
+                method: 'GET',
+                url: `${process.env.NEXT_PUBLIC_RESTFUL_API != undefined ? process.env.NEXT_PUBLIC_RESTFUL_API : ''}/pengedar/${pengedarId}`
+            }).then((res) => {
+                if (res.data?.id) {
+                    setPengedar(res.data);
+                } else {
+                    setPengedar(null);
+                }
+            })
+        } else {
+            setPengedar(null);
+        }
+    }
+
     useEffect(() => {
         getListParent();
     }, [id, pengedarId, jenis])
+
+    useEffect(() => {
+        getPengedar();
+    }, [pengedarId])
 
     useEffect(() => {
         getData()
@@ -188,11 +210,23 @@ const Edit = ({ id }) => {
                         )}
                         <div className="mb-3">
                             <label htmlFor="jenis" className="mb-1">Jenis <span className="text-danger">*</span></label>
-                            <select className={`form-control ${jenisError !== '' ? 'is-invalid' : ''}`} id='jenis' value={jenis} onChange={(e) => setJenis(e.target.value)} required>
+                            <select className={`form-control ${jenisError !== '' ? 'is-invalid' : ''}`} id='jenis' value={jenis} onChange={(e) => setJenis(e.target.value)} {...(!pengedarId && { readOnly: true })} required>
                                 <option value="" selected hidden disabled>-- Choose Jenis --</option>
-                                <option value="Kabupaten/Kota">Kabupaten/Kota</option>
-                                <option value="Kecamatan">Kecamatan</option>
-                                <option value="Kelurahan">Kelurahan</option>
+                                {(pengedar !== null && Object.keys(pengedar).length > 0) && (
+                                    <>
+                                        {pengedar.tingkat === 'Distributor' ? (
+                                            <>
+                                                <option value="Kabupaten/Kota">Kabupaten/Kota</option>
+                                                <option value="Kecamatan">Kecamatan</option>
+                                            </>
+                                        ) : (pengedar.tingkat === 'Pengecer' && (
+                                            <>
+                                                <option value="Kecamatan">Kecamatan</option>
+                                                <option value="Kelurahan">Kelurahan</option>
+                                            </>
+                                        ))}
+                                    </>
+                                )}
                             </select>
                             {jenisError !== '' && (
                                 <div className="invalid-feedback">{jenisError}</div>

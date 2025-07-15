@@ -32,6 +32,8 @@ const Create = () => {
     const [kopError, setKopError] = useState('')
     const [kontakNama, setKontakNama] = useState('')
     const [kontakNamaError, setKontakNamaError] = useState('')
+    const [kontakEmail, setKontakEmail] = useState('')
+    const [kontakEmailError, setKontakEmailError] = useState('')
     const [bankNama, setBankNama] = useState('')
     const [bankNamaError, setBankNamaError] = useState('')
     const [bankNomorRekening, setBankNomorRekening] = useState('')
@@ -46,10 +48,10 @@ const Create = () => {
         form.append('nama', nama)
         if (pid !== null && pid !== '') form.append('pid', pid)
         form.append('npwp', npwp)
-        form.append('kop', kop)
+        if (kop !== null) form.append('kop', kop)
         form.append('alamat', alamat)
-        form.append('footer', footer)
         form.append('kontakNama', kontakNama)
+        form.append('kontakEmail', kontakEmail)
         form.append('bankNama', bankNama)
         form.append('bankNomorRekening', bankNomorRekening)
         form.append('bankAtasNama', bankAtasNama)
@@ -118,6 +120,12 @@ const Create = () => {
                     setKontakNamaError(error.kontakNama)
                 } else {
                     setKontakNamaError('')
+                }
+
+                if (error?.kontakEmail) {
+                    setKontakEmailError(error.kontakEmail)
+                } else {
+                    setKontakEmailError('')
                 }
 
                 if (error?.bankNama) {
@@ -225,7 +233,7 @@ const Create = () => {
                                 <div className="invalid-feedback">{alamatError}</div>
                             )}
                         </div>
-                        <div className="col-md-4 mb-3">
+                        <div className="mb-3">
                             <label htmlFor="kop" className="mb-1">Kop Surat <span className="text-danger">*</span></label>
                             <input type="file" className={`form-control ${kopError !== '' ? 'is-invalid' : ''}`} id='kop' onChange={(e) => setKop(e.target.files[0])} required />
                             {kopError !== '' && (
@@ -237,6 +245,13 @@ const Create = () => {
                             <input type='text' className={`form-control ${kontakNamaError !== '' ? 'is-invalid' : ''}`} id='kontakNama' value={kontakNama} onChange={(e) => setKontakNama(e.target.value)} />
                             {kontakNamaError !== '' && (
                                 <div className="invalid-feedback">{kontakNamaError}</div>
+                            )}
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="kontakEmail" className="mb-1">Kontak Email</label>
+                            <input type='email' className={`form-control ${kontakEmailError !== '' ? 'is-invalid' : ''}`} id='kontakEmail' value={kontakEmail} onChange={(e) => setKontakEmail(e.target.value)} />
+                            {kontakEmailError !== '' && (
+                                <div className="invalid-feedback">{kontakEmailError}</div>
                             )}
                         </div>
                         <div className="mb-3">

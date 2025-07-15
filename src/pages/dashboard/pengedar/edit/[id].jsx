@@ -25,10 +25,12 @@ const Edit = ({ id }) => {
     const [npwpError, setNpwpError] = useState('')
     const [alamat, setAlamat] = useState('')
     const [alamatError, setAlamatError] = useState('')
-    const [footer, setFooter] = useState('')
-    const [footerError, setFooterError] = useState('')
+    const [kop, setKop] = useState(null)
+    const [kopError, setKopError] = useState('')
     const [kontakNama, setKontakNama] = useState('')
     const [kontakNamaError, setKontakNamaError] = useState('')
+    const [kontakEmail, setKontakEmail] = useState('')
+    const [kontakEmailError, setKontakEmailError] = useState('')
     const [bankNama, setBankNama] = useState('')
     const [bankNamaError, setBankNamaError] = useState('')
     const [bankNomorRekening, setBankNomorRekening] = useState('')
@@ -37,22 +39,27 @@ const Edit = ({ id }) => {
     const [bankAtasNamaError, setBankAtasNamaError] = useState('')
     const handleSubmit = async (e) => {
         e.preventDefault()
+        const form = new FormData();
+        form.append('tingkat', tingkat)
+        form.append('nomor', nomor)
+        form.append('nama', nama)
+        if (pid !== null && pid !== '') form.append('pid', pid)
+        form.append('npwp', npwp)
+        if (kop !== null) form.append('kop', kop)
+        form.append('alamat', alamat)
+        form.append('kontakNama', kontakNama)
+        form.append('kontakEmail', kontakEmail)
+        form.append('bankNama', bankNama)
+        form.append('bankNomorRekening', bankNomorRekening)
+        form.append('bankAtasNama', bankAtasNama)
         buttonRef.current.disabled = true
         buttonRef.current.innerHTML = ReactDOMServer.renderToString(<><FontAwesomeIcon spin={true} icon={faSpinner} />&nbsp; Processing</>)
         await axios({
             method: 'PUT',
             url: `${process.env.NEXT_PUBLIC_RESTFUL_API != undefined ? process.env.NEXT_PUBLIC_RESTFUL_API : ''}/pengedar/${id ? id : ''}`,
-            data: {
-                tingkat,
-                nama,
-                ...((pid !== null && pid !== '') && { pid }),
-                npwp,
-                alamat,
-                footer,
-                kontakNama,
-                bankNama,
-                bankNomorRekening,
-                bankAtasNama
+            data: form,
+            headers: {
+                'Content-Type': 'multipart/form-data'
             }
         }).then((res) => {
             if (res.data?.id) {
@@ -94,16 +101,22 @@ const Edit = ({ id }) => {
                     setAlamatError('')
                 }
 
-                if (error?.footer) {
-                    setFooterError(error.footer)
+                if (error?.kop) {
+                    setKopError(error.kop)
                 } else {
-                    setFooterError('')
+                    setKopError('')
                 }
 
                 if (error?.kontakNama) {
                     setKontakNamaError(error.kontakNama)
                 } else {
                     setKontakNamaError('')
+                }
+
+                if (error?.kontakEmail) {
+                    setKontakEmailError(error.kontakEmail)
+                } else {
+                    setKontakEmailError('')
                 }
 
                 if (error?.bankNama) {
@@ -140,12 +153,14 @@ const Edit = ({ id }) => {
                 url: `${process.env.NEXT_PUBLIC_RESTFUL_API != undefined ? process.env.NEXT_PUBLIC_RESTFUL_API : ''}/pengedar/${id ? id : ''}`,
             }).then((res) => {
                 if (res.data?.id) {
+                    setNomor(res.data.nomor);
                     setNama(res.data.nama);
                     setPid(res.data.pid ?? '');
                     setTingkat(res.data.tingkat);
                     setNpwp(res.data.npwp ?? '');
                     setAlamat(res.data.alamat ?? '');
                     setKontakNama(res.data.kontakNama ?? '');
+                    setKontakEmail(res.data.kontakEmail ?? '');
                     setBankNama(res.data.bankNama);
                     setBankNomorRekening(res.data.bankNomorRekening);
                     setBankAtasNama(res.data.bankAtasNama);
@@ -228,10 +243,24 @@ const Edit = ({ id }) => {
                             )}
                         </div>
                         <div className="mb-3">
+                            <label htmlFor="kop" className="mb-1">Kop Surat</label>
+                            <input type="file" className={`form-control ${kopError !== '' ? 'is-invalid' : ''}`} id='kop' onChange={(e) => setKop(e.target.files[0])} />
+                            {kopError !== '' && (
+                                <div className="invalid-feedback">{kopError}</div>
+                            )}
+                        </div>
+                        <div className="mb-3">
                             <label htmlFor="kontakNama" className="mb-1">Kontak Nama</label>
                             <input type='text' className={`form-control ${kontakNamaError !== '' ? 'is-invalid' : ''}`} id='kontakNama' value={kontakNama} onChange={(e) => setKontakNama(e.target.value)} />
                             {kontakNamaError !== '' && (
                                 <div className="invalid-feedback">{kontakNamaError}</div>
+                            )}
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="kontakEmail" className="mb-1">Kontak Email</label>
+                            <input type='email' className={`form-control ${kontakEmailError !== '' ? 'is-invalid' : ''}`} id='kontakEmail' value={kontakEmail} onChange={(e) => setKontakEmail(e.target.value)} />
+                            {kontakEmailError !== '' && (
+                                <div className="invalid-feedback">{kontakEmailError}</div>
                             )}
                         </div>
                         <div className="mb-3">

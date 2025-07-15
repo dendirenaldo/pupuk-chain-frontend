@@ -74,10 +74,48 @@ const Index = () => {
         },
         {
             title: 'Kontak',
-            dataIndex: "kontakNama",
-            key: "kontakNama",
-            sorter: (a, b) => { },
-            sortOrder: currentSort && currentSort.index == 'kontakNama' ? currentSort.order : undefined,
+            children: [
+                {
+                    title: 'Nama',
+                    dataIndex: "kontakNama",
+                    key: "kontakNama",
+                    sorter: (a, b) => { },
+                    sortOrder: currentSort && currentSort.index == 'kontakNama' ? currentSort.order : undefined,
+                },
+                {
+                    title: 'Email',
+                    dataIndex: "kontakEmail",
+                    key: "kontakEmail",
+                    sorter: (a, b) => { },
+                    sortOrder: currentSort && currentSort.index == 'kontakEmail' ? currentSort.order : undefined,
+                }
+            ]
+        },
+        {
+            title: 'Bank',
+            children: [
+                {
+                    title: 'Nama',
+                    dataIndex: "bankNama",
+                    key: "bankNama",
+                    sorter: (a, b) => { },
+                    sortOrder: currentSort && currentSort.index == 'bankNama' ? currentSort.order : undefined,
+                },
+                {
+                    title: 'Nomor Rekening',
+                    dataIndex: "bankNomorRekening",
+                    key: "bankNomorRekening",
+                    sorter: (a, b) => { },
+                    sortOrder: currentSort && currentSort.index == 'bankNomorRekening' ? currentSort.order : undefined,
+                },
+                {
+                    title: 'Atas Nomor',
+                    dataIndex: "bankAtasNama",
+                    key: "bankAtasNama",
+                    sorter: (a, b) => { },
+                    sortOrder: currentSort && currentSort.index == 'bankAtasNama' ? currentSort.order : undefined,
+                },
+            ]
         },
         {
             title: 'Action',
@@ -85,10 +123,10 @@ const Index = () => {
             render: (text, record, index) => {
                 return (
                     <div className='d-flex gap-2 justify-content-center'>
-                        <Link href={`/dashboard/pengedar/edit/${record.id}`} className='btn btn-success btn-sm' data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content='Edit Content'>
+                        <Link href={`/dashboard/pengedar/edit/${record.id}`} className='btn btn-success btn-sm' data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content='Edit Pengedar'>
                             <FontAwesomeIcon icon={faEdit} fixedWidth />
                         </Link>
-                        <button type='button' className='btn btn-danger btn-sm' onClick={() => handleDelete(record.id)} data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content='Delete Content'><FontAwesomeIcon icon={faTrashAlt} fixedWidth /></button>
+                        <button type='button' className='btn btn-danger btn-sm' onClick={() => handleDelete(record.id)} data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content='Delete Pengedar'><FontAwesomeIcon icon={faTrashAlt} fixedWidth /></button>
                     </div>
                 )
             }
@@ -126,7 +164,7 @@ const Index = () => {
                 }).then((res) => {
                     if (res.data?.id) {
                         getData()
-                        Swal.fire('Success', 'Content deleted successfully!', 'success')
+                        Swal.fire('Success', 'Pengedar deleted successfully!', 'success')
                     }
                 }).catch((err) => {
                     console.error(err)
